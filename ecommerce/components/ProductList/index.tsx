@@ -71,7 +71,7 @@ const ProductList = ({
         {items?.length > 0 ? (
           <SimpleGrid columns={{ sm: 1, md: 4 }} spacing={5} w={{ md: 1440 }}>
             {items?.length > 0 &&
-              items?.slice(4)?.map((item: ProductType, index) => (
+              items?.map((item: ProductType, index) => (
                 <Box px={{ sm: 0, md: 20 }} key={index}>
                   <Card
                     item={item}

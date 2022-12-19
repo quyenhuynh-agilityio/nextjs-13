@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useDisclosure, useToast } from "@chakra-ui/react";
 
 // Components
-import Features from "@/components/Features";
 import ProductList from "@/components/ProductList";
 import Information from "@/components/Information";
 import Introduction from "@/components/Introduction";
@@ -17,6 +16,7 @@ import { deleteProduct } from "@/services/Products";
 
 // Constants
 import { EMPTY_PRODUCTS, FAILED_DELETING_DATA } from "@/constants/message";
+import Pagination from "@/components/Pagination";
 
 type Props = {
   products?: string;
@@ -59,15 +59,6 @@ const HomePage = ({ products }: Props) => {
       {products ? (
         <>
           <Information />
-          <Features
-            onDelete={handleDelete}
-            items={data}
-            isShowError={isShowError}
-            onOpenDeleteModal={handleOpenDeleteModal}
-            onCloseDeleteModal={deleteProductModal.onClose}
-            isOpenDeleteModal={deleteProductModal.isOpen}
-          />
-          <Introduction />
           <ProductList
             onOpenAddNewModal={addNewProductModal.onOpen}
             onCloseAddNewModal={addNewProductModal.onClose}
@@ -79,6 +70,8 @@ const HomePage = ({ products }: Props) => {
             onCloseDeleteModal={deleteProductModal.onClose}
             isOpenDeleteModal={deleteProductModal.isOpen}
           />
+          <Pagination />
+          <Introduction />
         </>
       ) : (
         <Notification label={EMPTY_PRODUCTS} />

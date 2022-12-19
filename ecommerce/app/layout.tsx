@@ -1,18 +1,24 @@
-import './globals.css'
+import { ReactNode } from "react";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+// Components
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import { ChakraProvider } from "@/components/ChakraProvider";
+
+type PropsTypes = { children: ReactNode };
+
+const RootLayout = ({ children }: PropsTypes) => {
   return (
     <html lang="en">
-      {/*
-        <head /> will contain the components returned by the nearest parent
-        head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
-      */}
-      <head />
-      <body>{children}</body>
+      <body>
+        <ChakraProvider>
+          <Header />
+          {children}
+          <Footer />
+        </ChakraProvider>
+      </body>
     </html>
-  )
-}
+  );
+};
+
+export default RootLayout;

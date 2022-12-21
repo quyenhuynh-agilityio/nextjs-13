@@ -23,8 +23,19 @@ type Props = {
 };
 
 const HomePage = ({ products }: Props) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const pageSize = 4;
+
   // Converting string to array object when reciving data from Server Component
   const data = products ? JSON.parse(products) : {};
+
+  const indexOfLastPost = currentPage * pageSize;
+  const indexOfFirstPost = indexOfLastPost - pageSize;
+  const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   const router = useRouter();
   const toast = useToast();
@@ -64,13 +75,18 @@ const HomePage = ({ products }: Props) => {
             onCloseAddNewModal={addNewProductModal.onClose}
             isOpenAddNewModal={addNewProductModal.isOpen}
             onDelete={handleDelete}
-            items={data}
+            items={currentPosts}
             isShowError={isShowError}
             onOpenDeleteModal={handleOpenDeleteModal}
             onCloseDeleteModal={deleteProductModal.onClose}
             isOpenDeleteModal={deleteProductModal.isOpen}
           />
-          <Pagination />
+          <Pagination
+            paginate={paginate}
+            postsPerPage={pageSize}
+            totalPosts={data.length}
+            currentPage={currentPage}
+          />
           <Introduction />
         </>
       ) : (

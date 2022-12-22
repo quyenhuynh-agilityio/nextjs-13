@@ -15,9 +15,6 @@ export const basicFetch = async ({
 
   switch (fetchingMethod) {
     case "ISR":
-      // eslint-disable-next-line no-console
-      console.log("ISR");
-
       // This request should be cached with a lifetime of 5 seconds.
       // Similar to `getStaticProps` with the `revalidate` option.
       response = await fetch(endpoint, { next: { revalidate: 10 } });
@@ -53,7 +50,7 @@ export const fetchProducts = async ({
   fetchingMethod?: Methods;
 }) => {
   return await basicFetch({
-    endpoint: API_ENDPOINT,
+    endpoint: `${API_ENDPOINT}?page=1&limit=12`,
     fetchingMethod,
   });
 };

@@ -1,7 +1,7 @@
 "use client";
 
 // Libraries
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDisclosure, useToast } from "@chakra-ui/react";
 
@@ -17,7 +17,7 @@ import { deleteProduct } from "@/services/Products";
 // Constants
 import { EMPTY_PRODUCTS, FAILED_DELETING_DATA } from "@/constants/message";
 import Pagination from "@/components/Pagination";
-import { PAE_SIZE } from "@/constants/variables";
+import { PAGE_SIZE } from "@/constants/variables";
 
 type Props = {
   products?: string;
@@ -29,8 +29,8 @@ const HomePage = ({ products }: Props) => {
   // Converting string to array object when reciving data from Server Component
   const data = products ? JSON.parse(products) : {};
 
-  const indexOfLastPost = currentPage * PAE_SIZE;
-  const indexOfFirstPost = indexOfLastPost - PAE_SIZE;
+  const indexOfLastPost = currentPage * PAGE_SIZE;
+  const indexOfFirstPost = indexOfLastPost - PAGE_SIZE;
   const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
 
   const paginate = (pageNumber: number) => {
@@ -51,7 +51,11 @@ const HomePage = ({ products }: Props) => {
     try {
       await deleteProduct({ id: selectedId });
       deleteProductModal.onClose();
-      router.refresh();
+      startTransition(() => {
+        // Refresh the current route and fetch new data from the server without
+        // losing client-side browser or React state.
+        router.refresh();
+      });
       toast({ description: "This product was deleted!", status: "success" });
       setIsShowError("");
     } catch (_) {
@@ -83,7 +87,6 @@ const HomePage = ({ products }: Props) => {
           />
           <Pagination
             paginate={paginate}
-            postsPerPage={PAE_SIZE}
             totalPosts={data.length}
             currentPage={currentPage}
           />

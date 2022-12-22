@@ -31,3 +31,11 @@ export const blurDataURL = (
   width?: number | undefined,
   height?: number | undefined,
 ) => `data:image/svg+xml;base64,${toBase64(shimmer(width, height))}`;
+
+
+export const getPages = (totalPosts: number, postsPerPage: number) => {
+  return Array.from(
+    { length: totalPosts / postsPerPage },
+    (_, i) => i + 1,
+  );
+}

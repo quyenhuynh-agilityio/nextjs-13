@@ -17,6 +17,7 @@ import { deleteProduct } from "@/services/Products";
 // Constants
 import { EMPTY_PRODUCTS, FAILED_DELETING_DATA } from "@/constants/message";
 import Pagination from "@/components/Pagination";
+import { PAE_SIZE } from "@/constants/variables";
 
 type Props = {
   products?: string;
@@ -24,13 +25,12 @@ type Props = {
 
 const HomePage = ({ products }: Props) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const pageSize = 4;
 
   // Converting string to array object when reciving data from Server Component
   const data = products ? JSON.parse(products) : {};
 
-  const indexOfLastPost = currentPage * pageSize;
-  const indexOfFirstPost = indexOfLastPost - pageSize;
+  const indexOfLastPost = currentPage * PAE_SIZE;
+  const indexOfFirstPost = indexOfLastPost - PAE_SIZE;
   const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
 
   const paginate = (pageNumber: number) => {
@@ -83,7 +83,7 @@ const HomePage = ({ products }: Props) => {
           />
           <Pagination
             paginate={paginate}
-            postsPerPage={pageSize}
+            postsPerPage={PAE_SIZE}
             totalPosts={data.length}
             currentPage={currentPage}
           />

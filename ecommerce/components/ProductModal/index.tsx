@@ -1,7 +1,7 @@
 "use client";
 // Libraries
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, startTransition } from "react";
 
 // Components
 import {
@@ -31,8 +31,8 @@ const ProductModal = ({ isOpen, onClose, title }: PropsType) => {
   const toast = useToast();
 
   const [productName, setProductName] = useState("");
-  const [productPrice, setproductPrice] = useState("");
-  const [productPhotoURL, setproductPhotoURL] = useState("");
+  const [productPrice, setProductPrice] = useState("");
+  const [productPhotoURL, setProductPhotoURL] = useState("");
   const [isRequired, setIsRequired] = useState("");
   const [isShowError, setIsShowError] = useState("");
 
@@ -58,14 +58,21 @@ const ProductModal = ({ isOpen, onClose, title }: PropsType) => {
           },
         };
 
-        await addNewProduct({ product: newProduct });
+        await addNewProduct({
+          product: newProduct,
+        });
         onClose();
         // Reference: https://beta.nextjs.org/docs/data-fetching/mutating
         // The Next.js team is working on a new RFC for mutating data in Next.js.
-        //  This RFC has not been published yet.
+        // This RFC has not been published yet.
         // For now, we recommend the following pattern:
         // You can mutate data inside the app directory with router.refresh().
-        router.refresh();
+        startTransition(() => {
+          // Refresh the current route and fetch new data from the server without
+          // losing client-side browser or React state.
+          router.refresh();
+        });
+
         toast({ description: "A new product was added!", status: "success" });
         setIsShowError("");
       } catch (_) {
@@ -97,14 +104,14 @@ const ProductModal = ({ isOpen, onClose, title }: PropsType) => {
           variant="outline"
           type="number"
           value={productPrice || ""}
-          onChange={(event) => setproductPrice(event.target.value)}
+          onChange={(event) => setProductPrice(event.target.value)}
         />
         <FormLabel pt="10px">Product photo URL:</FormLabel>
         <Input
           size={{ sm: "sm", md: "xl" }}
           variant="outline"
           value={productPhotoURL || ""}
-          onChange={(event) => setproductPhotoURL(event.target.value)}
+          onChange={(event) => setProductPhotoURL(event.target.value)}
         />
         <Text fontFamily="base" fontSize="sm" color="crimson" mt={1}>
           {isRequired}

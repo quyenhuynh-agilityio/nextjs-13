@@ -5,7 +5,7 @@ import { requestHeaders } from "@/constants/variables";
 // Types
 import { FetchOptionsType, Methods, RequestPropsType } from "@/types/index";
 
-const API_ENDPOINT = process.env.API_ENDPOINT || "";
+const API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT || "";
 
 export const basicFetch = async ({
   endpoint,
@@ -50,7 +50,7 @@ export const fetchProducts = async ({
   fetchingMethod?: Methods;
 }) => {
   return await basicFetch({
-    endpoint: `${API_ENDPOINT}?page=1&limit=12`,
+    endpoint: API_ENDPOINT,
     fetchingMethod,
   });
 };

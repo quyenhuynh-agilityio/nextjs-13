@@ -1,10 +1,14 @@
 "use client";
 
+// Libraries
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 
+// Types
+import { ProductType } from "@/types/index";
+
 type PropsTypes = {
-  cartCount?: PropsTypes[];
+  cartCount?: ProductType[];
 };
 
 const Cart = ({ cartCount }: PropsTypes) => {

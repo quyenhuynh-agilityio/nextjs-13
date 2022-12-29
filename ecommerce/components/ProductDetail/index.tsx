@@ -3,30 +3,33 @@
 // Libraries
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useCallback, useContext } from "react";
 
 // Components
 import { Text, Heading, Box, Stack, Button, Flex } from "@chakra-ui/react";
 
 // Utilities
 import { blurDataURL } from "@/utils/utilities";
+import { setItem } from "@/utils/localStorage";
 
 // Constants
 import ROUTES from "@/constants/router";
 
 // Types
-import { ProductType } from "@/types/index";
-import { useEffect, useState } from "react";
-import { getItem, setItem } from "@/utils/localStorage";
-import { useCallback } from "react";
+import { CartContextTypes, ProductType } from "@/types/index";
+
+// Contexts
+import { CartContext } from "contexts/CartContext";
 
 type PropsTypes = {
   product: ProductType;
 };
 
 const ProductDetail = ({ product }: PropsTypes) => {
+  const context: CartContextTypes = useContext(CartContext);
+  const { cartCount, setCartCount } = context || {};
+
   const router = useRouter();
-  const initialCartCount = getItem("cart_count") || [];
-  const [cartCount, setCartCount] = useState(initialCartCount);
 
   const { image, name, price } = product || {};
 
@@ -42,7 +45,7 @@ const ProductDetail = ({ product }: PropsTypes) => {
 
   const handelAddToCart = useCallback(() => {
     setCartCount([...cartCount, product]);
-  }, [cartCount, product]);
+  }, [cartCount, product, setCartCount]);
 
   return (
     <Stack

@@ -7,10 +7,11 @@ import Image from "next/image";
 // Utilities
 import { blurDataURL } from "@/utils/utilities";
 import Cart from "../Cart";
-import { getItem } from "@/utils/localStorage";
+import { useContext } from "react";
+import { CartContext } from "contexts/CartContext";
 
 const Header = () => {
-  const cartCount = getItem("cart_count") || [];
+  const { cartCount } = useContext(CartContext);
 
   return (
     <Container as="header" maxW="100%" p={0} m={0}>

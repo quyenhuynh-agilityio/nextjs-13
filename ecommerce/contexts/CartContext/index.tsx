@@ -1,7 +1,13 @@
 "use client";
 
-import React from "react";
+// Libraries
+import { createContext } from "react";
 
-export const CartContext = React.createContext<
-  [number, React.Dispatch<React.SetStateAction<null | number>>] | undefined
->(undefined);
+// Types
+import { CartContextTypes } from "@/types/index";
+const initialState = {
+  cartCount: [],
+  setCartCount: () => {},
+};
+
+export const CartContext = createContext<CartContextTypes>(initialState);

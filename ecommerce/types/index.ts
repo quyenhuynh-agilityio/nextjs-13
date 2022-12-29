@@ -1,4 +1,5 @@
 import { StaticImageData } from "next/image";
+import { Dispatch, SetStateAction } from "react";
 
 export type ImageType = {
   src: string | StaticImageData;
@@ -30,3 +31,8 @@ export type RequestPropsType = {
 };
 
 export type FunctionType = (id?: string) => void;
+
+export type CartContextTypes = {
+  cartCount: ProductType[];
+  setCartCount: Dispatch<SetStateAction<ProductType[]>>;
+};

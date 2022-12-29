@@ -2,10 +2,10 @@
 
 // Libraries
 import React from "react";
+import Link from "next/link";
 
 // Components
 import { Center, Box } from "@chakra-ui/react";
-import Link from "next/link";
 import ROUTES from "@/constants/router";
 
 // The not-found file is used to render UI when the notFound function is thrown within a route segment

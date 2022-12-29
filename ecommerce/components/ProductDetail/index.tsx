@@ -2,10 +2,10 @@
 
 // Libraries
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Components
-import { Text, Heading, Box, Stack, Center } from "@chakra-ui/react";
+import { Text, Heading, Box, Stack, Button, Flex } from "@chakra-ui/react";
 
 // Utilities
 import { blurDataURL } from "@/utils/utilities";
@@ -15,15 +15,35 @@ import ROUTES from "@/constants/router";
 
 // Types
 import { ProductType } from "@/types/index";
+import { useEffect, useState } from "react";
+import { getItem, setItem } from "@/utils/localStorage";
+import { useCallback } from "react";
 
 type PropsTypes = {
   product: ProductType;
 };
 
 const ProductDetail = ({ product }: PropsTypes) => {
+  const router = useRouter();
+  const initialCartCount = getItem("cart_count") || [];
+  const [cartCount, setCartCount] = useState(initialCartCount);
+
   const { image, name, price } = product || {};
 
   const { src, alt, height, width } = image || {};
+
+  const handleGoBack = () => {
+    router.push(ROUTES.HOME_PAGE);
+  };
+
+  useEffect(() => {
+    setItem("cart_count", JSON.stringify(cartCount));
+  }, [cartCount]);
+
+  const handelAddToCart = useCallback(() => {
+    setCartCount([...cartCount, product]);
+  }, [cartCount, product]);
+
   return (
     <Stack
       px={{ sm: 10 }}
@@ -64,18 +84,27 @@ const ProductDetail = ({ product }: PropsTypes) => {
             </Box>
             <Box>{price}</Box>
           </Stack>
-          <Center
-            p={3}
-            borderRadius={4}
-            borderColor="primary.main"
-            border="1px solid"
-            w={150}
-            fontFamily="base"
-            fontSize="base"
-            _hover={{ opacity: "0.8" }}
-          >
-            <Link href={ROUTES.HOME_PAGE}>Back to Home</Link>
-          </Center>
+          <Flex>
+            <Button
+              fontSize="base"
+              fontFamily="base"
+              variant="primary"
+              size={{ sm: "md" }}
+              onClick={handleGoBack}
+              mr={{ sm: 0, md: "30px" }}
+            >
+              Back to Home
+            </Button>
+            <Button
+              onClick={handelAddToCart}
+              fontSize="base"
+              fontFamily="base"
+              variant="primary"
+              size={{ sm: "md" }}
+            >
+              Add to cart
+            </Button>
+          </Flex>
         </Stack>
         <Stack pb={10} py={{ sm: 10, md: 0 }}>
           <Text fontFamily="base" fontSize="base" pb={{ sm: 5 }}>

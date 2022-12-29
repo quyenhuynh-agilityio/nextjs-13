@@ -1,9 +1,10 @@
+// Libraries
 import { ReactNode } from "react";
 
 // Components
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { ChakraProvider } from "@/components/ChakraProvider";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { ChakraProvider } from "@/providers/ChakraProvider";
 
 type PropsTypes = { children: ReactNode };
 

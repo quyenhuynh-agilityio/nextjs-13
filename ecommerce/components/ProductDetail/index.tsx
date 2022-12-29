@@ -15,6 +15,9 @@ import ROUTES from "@/constants/router";
 
 // Types
 import { ProductType } from "@/types/index";
+import { useEffect, useState } from "react";
+import { getItem, setItem } from "@/utils/localStorage";
+import { useCallback } from "react";
 
 type PropsTypes = {
   product: ProductType;
@@ -22,6 +25,8 @@ type PropsTypes = {
 
 const ProductDetail = ({ product }: PropsTypes) => {
   const router = useRouter();
+  const initialCartCount = getItem("cart_count") || [];
+  const [cartCount, setCartCount] = useState(initialCartCount);
 
   const { image, name, price } = product || {};
 
@@ -30,6 +35,14 @@ const ProductDetail = ({ product }: PropsTypes) => {
   const handleGoBack = () => {
     router.push(ROUTES.HOME_PAGE);
   };
+
+  useEffect(() => {
+    setItem("cart_count", JSON.stringify(cartCount));
+  }, [cartCount]);
+
+  const handelAddToCart = useCallback(() => {
+    setCartCount([...cartCount, product]);
+  }, [cartCount, product]);
 
   return (
     <Stack
@@ -83,6 +96,7 @@ const ProductDetail = ({ product }: PropsTypes) => {
               Back to Home
             </Button>
             <Button
+              onClick={handelAddToCart}
               fontSize="base"
               fontFamily="base"
               variant="primary"

@@ -7,11 +7,11 @@ import Image from "next/image";
 // Utilities
 import { blurDataURL } from "@/utils/utilities";
 import Cart from "../Cart";
+import { getItem } from "@/utils/localStorage";
 
-type PropsTypes = {
-  cartCount: number;
-};
-const Header = ({ cartCount }: PropsTypes) => {
+const Header = () => {
+  const cartCount = getItem("cart_count") || [];
+
   return (
     <Container as="header" maxW="100%" p={0} m={0}>
       <Box w="100%" h={{ sm: "460px", md: "700px" }} pos="relative">
